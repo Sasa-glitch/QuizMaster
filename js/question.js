@@ -235,7 +235,7 @@ export default class Question {
     startTimer() {
         const timerDisplay = document.querySelector(".timer");
         let warningStarted = false;
-        const warningAudio = new Audio("../sounds/tick-tock-echoing-with-quarter-ticks.wav")
+        const warningAudio = new Audio("./../sounds/tick-tock-echoing-with-quarter-ticks.wav")
         this.timerInterval = setInterval(() => {
             this.timeRemaining--;
             document.querySelector("span.timer-value").textContent =
@@ -264,7 +264,7 @@ export default class Question {
     // 4. Show "TIME'S UP!" message
     // 5. Call animateQuestion() after a delay
     handleTimeUp() {
-        const revealAudio = new Audio("../sounds/reveal.wav");
+        const revealAudio = new Audio("./../sounds/reveal.wav");
         revealAudio.play();
         this.answered = true;
         this.removeEventListeners();
@@ -300,8 +300,8 @@ export default class Question {
         if (this.answered) {
             return;
         }
-        const correctAudio = new Audio("../sounds/correct.wav");
-        const wrongAudio = new Audio("../sounds/wrong-one.ogg");
+        const correctAudio = new Audio("./../sounds/correct.wav");
+        const wrongAudio = new Audio("./../sounds/wrong-one.ogg");
 
         this.answered = true;
         this.stopTimer();
@@ -343,7 +343,7 @@ export default class Question {
             this.displayQuestion();
         } else {
             const results = this.quiz.endQuiz();
-            const finishedAudio = new Audio("../sounds/finished.wav");
+            const finishedAudio = new Audio("./../sounds/finished.wav");
             finishedAudio.play();
             this.container.innerHTML = results;
             document
