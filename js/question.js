@@ -235,23 +235,26 @@ export default class Question {
     // 4. Update the display
     // 5. If timeRemaining <= 10 seconds, add 'warning' class
     // 6. If timeRemaining <= 0, call stopTimer() and handleTimeUp()
+    warningAudio = new Audio(
+            "sounds/tick-tock-echoing-with-quarter-ticks.wav"
+        );
     startTimer() {
         const timerDisplay = document.querySelector(".timer");
-        const warningAudio = new Audio(
-            "sounds/tick-tock-echoing-with-quarter-ticks.mp3"
-        );
+        let warningStarted = false;
         this.timerInterval = setInterval(() => {
             this.timeRemaining--;
             document.querySelector("span.timer-value").textContent =
                 this.timeRemaining;
             if (this.timeRemaining <= 10 && !warningStarted) {
                 timerDisplay.classList.add("warning");
-                warningAudio.play();
+                console.log("fired")
+                this.warningAudio.play();
+                warningStarted = true;
             }
             if (this.timeRemaining <= 0) {
                 this.stopTimer();
                 this.handleTimeUp();
-                warningAudio.pause();
+                this.warningAudio.pause();
             }
         }, 1000);
     }
@@ -361,6 +364,7 @@ export default class Question {
     // 3. Wait for duration
     // 4. Call getNextQuestion()
     animateQuestion(duration = 500) {
+        this.warningAudio.pause();
         setTimeout(() => {
             document.querySelector(".question-card").classList.add("exit");
             setTimeout(() => {
