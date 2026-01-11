@@ -220,7 +220,13 @@ async function startQuiz() {
             aQuestion.displayQuestion();
         }
     } catch (error) {
-        showError(error);
+        showError(`${error} 
+            ${"\n"}
+            IMPORTANT!!!!!
+            ${"\n"}
+            If you are trying to fetch question from a certain category the maximum number can be less than 50:
+            TRY lower number of questions, or TRY different difficulty
+            `);
         console.error(error)
     }
 }
