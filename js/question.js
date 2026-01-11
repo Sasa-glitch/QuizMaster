@@ -188,6 +188,7 @@ export default class Question {
             </div>
         `;
         this.container.innerHTML = htmlMarkup;
+        this.removeEventListeners();
         this.addEventListeners();
         this.startTimer();
     }
@@ -211,13 +212,15 @@ export default class Question {
     // TODO: Create removeEventListeners() method
     // Remove any keyboard listeners you added
     removeEventListeners() {
-        this.keydownEvents.forEach((eventObject) => {
-            eventObject.element.removeEventListener(
-                eventObject.event,
-                eventObject.callback
-            );
-        });
-        this.keydownEvents = [];
+        if (this.keydownEvents) {
+            this.keydownEvents.forEach((eventObject) => {
+                eventObject.element.removeEventListener(
+                    eventObject.event,
+                    eventObject.callback
+                );
+            });
+            this.keydownEvents = [];
+        }
     }
     // tracking events
     keydownEvents = [];
@@ -234,8 +237,9 @@ export default class Question {
     // 6. If timeRemaining <= 0, call stopTimer() and handleTimeUp()
     startTimer() {
         const timerDisplay = document.querySelector(".timer");
-        let warningStarted = false;
-        const warningAudio = new Audio("sounds/tick-tock-echoing-with-quarter-ticks.wav")
+        const warningAudio = new Audio(
+            "sounds/tick-tock-echoing-with-quarter-ticks.mp3"
+        );
         this.timerInterval = setInterval(() => {
             this.timeRemaining--;
             document.querySelector("span.timer-value").textContent =
@@ -243,7 +247,6 @@ export default class Question {
             if (this.timeRemaining <= 10 && !warningStarted) {
                 timerDisplay.classList.add("warning");
                 warningAudio.play();
-                warningStarted = true;
             }
             if (this.timeRemaining <= 0) {
                 this.stopTimer();
@@ -267,9 +270,11 @@ export default class Question {
         const revealAudio = new Audio("sounds/reveal.wav");
         revealAudio.play();
         this.answered = true;
-        this.removeEventListeners();
+        // this.removeEventListeners();
         document.querySelectorAll(".answer-btn").forEach((answer) => {
-            console.log(answer.getAttribute("data-answer") === this.correctAnswer);
+            console.log(
+                answer.getAttribute("data-answer") === this.correctAnswer
+            );
             console.log(answer.getAttribute("data-answer"));
             console.log(this.correctAnswer);
             if (answer.getAttribute("data-answer") === this.correctAnswer) {
@@ -302,7 +307,6 @@ export default class Question {
         }
         const correctAudio = new Audio("sounds/correct.wav");
         const wrongAudio = new Audio("sounds/wrong-one.ogg");
-
         this.answered = true;
         this.stopTimer();
         const selectedAnswer = choiceElement.getAttribute("data-answer");
